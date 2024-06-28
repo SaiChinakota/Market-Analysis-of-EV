@@ -1,0 +1,136 @@
+---
+title: "Final Project"
+author: "Yeshwanth"
+date: "2023-05-08"
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+library(RColorBrewer)
+ ev <- read.csv("E:/Downloads/ev(1).csv")
+```
+
+```{r}
+#What brand electric vehicles are more popular in Washington State and what model is more common among them?
+
+df <- ev[ev$State == "WA", ]
+
+my_colors <- brewer.pal(5, "Set1")
+
+# Group the data by make and count the number of unique VINs for each make
+car_market_share <- df %>% 
+  group_by(Make) %>% 
+  summarize(count = n_distinct(`VIN`)) %>% 
+  arrange(desc(count)) %>% 
+  rename(model = Make)
+
+# Select the top and bottom 5 makes based on count
+car_market_share_top_5 <- head(car_market_share, 5)
+car_market_share_bottom_5 <- tail(car_market_share, 5)
+
+
+plot_top <- ggplot() +
+  geom_bar(data = car_market_share_top_5, aes(x = model, y = count, fill = model), 
+           stat = "identity") +
+  scale_fill_manual(values = my_colors) +
+  ggtitle("Top 5 Cars") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Company", y = "Count") +
+  coord_flip()
+
+plot_bottom <- ggplot() +
+  geom_bar(data = car_market_share_bottom_5, aes(x = model, y = count, fill = model), 
+           stat = "identity") +
+  scale_fill_manual(values = my_colors) +
+  ggtitle("Bottom 5 Cars") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Company", y = "Count") +
+  coord_flip()
+
+
+grid.arrange(plot_top, plot_bottom, ncol = 1)
+
+
+
+
+
+```
+```{r}
+car_counts <- df %>% 
+  group_by(Make, Model) %>% 
+  summarize(n = n()) %>% 
+  ungroup()
+
+
+car_counts_sorted <- car_counts %>% 
+  arrange(desc(n))
+
+# Create a bar plot of the top 10 most popular car makes and models
+ggplot(data = car_counts_sorted[1:10, ], aes(x = paste(Make, Model, sep = " "), y = n, fill = Make)) + 
+  geom_col() + 
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Top 10 Most Popular Car Makes and Models", x = "Car company and Model", y = "Count") + coord_flip()
+```
+
+```{r}
+#What is the growth of Electric vehicles across the years and what its future?
+count_df <- ev %>%
+  group_by(Model_Year) %>%
+  summarise(count = n())
+
+count_df
+#removing 2023 as the  data is till april only
+count_df <- count_df %>%
+  filter(Model_Year != 2023)
+
+count_df
+
+
+```
+
+```{r}
+#taking only values from year 2012 
+count_df <- count_df %>%
+  filter(Model_Year >  2011)
+
+count_df$Model_Year <- as.integer(count_df$Model_Year)
+
+model <- lm(count ~ Model_Year, data = count_df)
+
+ggplot(count_df, aes(x = Model_Year, y = count)) +
+  geom_point() +
+  geom_line(data = data.frame(Model_Year = seq(2012, 2022), count = predict(model, newdata = data.frame(Model_Year = seq(2012, 2022))))) +
+  ggtitle("Linear Model for Data Values from 2012") +
+  xlab("Year") +
+  ylab("Count") 
+```
+```{r}
+#ployomial graph
+
+model <- lm(count ~ poly(Model_Year, 3), data = count_df)
+
+# Plot the data points and the polynomial model
+ggplot(count_df, aes(x = Model_Year, y = count)) +
+  geom_point() +
+  geom_line(data = data.frame(Model_Year = seq(2012, 2022), count = predict(model, newdata = data.frame(Model_Year = seq(2012, 2022))))) +
+  ggtitle("Polynomial Model for Data Values from 2012") +
+  xlab("Year") +
+  ylab("Count")
+```
+```{r}
+#predictions
+# Predict the count for year 2023
+prediction_2023 <- predict(model, newdata = data.frame(Model_Year = 2023))
+
+prediction_2023
+
+# Predict the count for year 2025
+prediction_2025 <- predict(model, newdata = data.frame(Model_Year = 2025))
+prediction_2025
+
+```
+
