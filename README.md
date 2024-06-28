@@ -1,7 +1,7 @@
-Data Analytics and Machine Learning Projects
+## Data Analytics and Machine Learning Projects
 Welcome to my GitHub repository, a collection of projects showcasing my work in data analytics and machine learning. This repository contains various projects that highlight my skills in data processing, analysis, visualization, and predictive modeling. Below is an overview of the key projects included:
 
-Projects
+### Projects
 1. Customer Churn Prediction
 Predicting customer churn using machine learning techniques. This project includes data preprocessing, feature engineering, model training, and evaluation. Tools used: Python, Pandas, Scikit-learn, and Matplotlib.
 
@@ -20,13 +20,14 @@ Analyzing sales data to identify trends and business opportunities. The project 
 6. Financial Data Feeds Development
 Developing financial data feeds and performing data visualization using Tableau. This project includes data extraction, transformation, and loading (ETL) processes, followed by dashboard creation in Tableau. Tools used: Python, SQL, and Tableau.
 
-Skills Demonstrated
+### Skills Demonstrated
 Programming Languages: Python, R, SQL, NoSQL
 Data Analysis and Visualization: Pandas, Seaborn, Matplotlib, Power BI, Tableau, Azure Data Visualization Tool, AWS Quick Sight, RapidMiner, DAX
 Machine Learning and NLP: Scikit-learn, TensorFlow, NLTK
 Database Management: MySQL, Microsoft SQL Server, Data Warehouses, Data Lakes
 Other Tools: Microsoft Excel, Scrum methodology
-About Me
+
+### About Me
 I am passionate about data analytics and machine learning, with a strong academic background and professional experience in these fields. I enjoy leveraging data to solve complex problems and drive business insights.
 
 Feel free to explore the projects and reach out if you have any questions or suggestions. Happy coding!
